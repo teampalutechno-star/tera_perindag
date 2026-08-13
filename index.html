@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Tera Perindag</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .page {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      .page.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .modal-pop {
+        animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .active-scale:active {
+        transform: scale(0.97);
+        transition: transform 0.1s;
+      }
+
+      input[type="radio"]:checked + div {
+        border-color: #2563eb;
+        background-color: #eff6ff;
+      }
+      input[type="radio"]:checked + div .radio-icon {
+        color: #2563eb;
+      }
+
+      /* Sidebar Active State */
+      .nav-btn.active-nav {
+        background-color: #eff6ff;
+        color: #2563eb;
+      }
+      .nav-btn.active-nav i {
+        color: #2563eb;
+      }
+    </style>
+  </head>
+  <body class="flex h-screen w-screen overflow-hidden text-slate-800">
+    <!-- ================= SIDEBAR ================= -->
+    <aside
+      class="w-64 bg-white border-r border-slate-200 flex flex-col z-20 flex-shrink-0"
+    >
+      <div class="h-16 flex items-center px-6 border-b border-slate-100">
+        <div
+          class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3 shadow-md shadow-blue-500/30"
+        >
+          <i class="ph-bold ph-scales text-white text-xl"></i>
+        </div>
+        <h1 class="font-bold text-lg text-slate-800 tracking-tight">
+          Tera<span class="text-blue-600">Dashboard</span>
+        </h1>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+        <p
+          class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 mt-2"
+        >
+          Menu Utama
+        </p>
+
+        <button
+          onclick="window.switchTab('home')"
+          id="nav-home"
+          class="nav-btn active-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all group"
+        >
+          <i class="ph-fill ph-squares-four text-xl transition-colors"></i>
+          <span class="font-semibold text-sm">Dashboard</span>
+        </button>
+
+        <button
+          onclick="window.switchTab('data')"
+          id="nav-data"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all group"
+        >
+          <i class="ph ph-folder-open text-xl transition-colors"></i>
+          <span class="font-semibold text-sm">Data Pengujian</span>
+        </button>
+
+        <button
+          onclick="window.switchTab('input')"
+          id="nav-input"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all group"
+        >
+          <i class="ph ph-note-pencil text-xl transition-colors"></i>
+          <span class="font-semibold text-sm">Input UTTP Baru</span>
+        </button>
+
+        <p
+          class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6"
+        >
+          Sistem
+        </p>
+
+        <button
+          onclick="window.switchTab('profil')"
+          id="nav-profil"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all group"
+        >
+          <i class="ph ph-gear text-xl transition-colors"></i>
+          <span class="font-semibold text-sm">Pengaturan</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-slate-100">
+        <div class="flex items-center gap-3 px-4 py-3">
+          <div
+            class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center border-2 border-white shadow-sm flex-shrink-0"
+          >
+            <i class="ph-fill ph-user text-xl text-blue-600"></i>
+          </div>
+          <div class="overflow-hidden">
+            <h2
+              class="text-sm font-bold text-slate-800 truncate"
+              id="sidebar-nama"
+            >
+              Petugas Tera
+            </h2>
+            <p
+              class="text-xs text-green-500 font-medium truncate flex items-center gap-1"
+            >
+              <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Online
+            </p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+      <!-- Top Header -->
+      <header
+        class="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0"
+      >
+        <h2 id="header-title" class="font-bold text-xl text-slate-800">
+          Overview Dashboard
+        </h2>
+        <div class="flex items-center gap-4">
+          <div class="text-right hidden sm:block">
+            <p class="text-xs text-slate-500 font-medium" id="header-date">
+              Selasa, 24 Okt 2023
+            </p>
+          </div>
+          <button
+            onclick="window.notifAlert()"
+            class="w-10 h-10 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 active-scale transition-colors relative"
+          >
+            <i class="ph-bold ph-bell text-lg"></i>
+            <span
+              class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"
+            ></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Scrollable Area -->
+      <main class="flex-1 overflow-y-auto p-8">
+        <!-- ================= PAGE: BERANDA ================= -->
+        <div id="page-home" class="page active max-w-6xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Stat 1 -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
+            >
+              <div
+                class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600"
+              >
+                <i class="ph-fill ph-files text-3xl"></i>
+              </div>
+              <div>
+                <p
+                  class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1"
+                >
+                  Total Data
+                </p>
+                <h2 class="text-3xl font-black text-slate-700" id="stat-total">
+                  0
+                </h2>
+              </div>
+            </div>
+            <!-- Stat 2 -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
+            >
+              <div
+                class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0 text-green-600"
+              >
+                <i class="ph-fill ph-check-circle text-3xl"></i>
+              </div>
+              <div>
+                <p
+                  class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1"
+                >
+                  Sah (Total)
+                </p>
+                <h2 class="text-3xl font-black text-slate-700" id="stat-sah">
+                  0
+                </h2>
+              </div>
+            </div>
+            <!-- Stat 3 -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
+            >
+              <div
+                class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+              >
+                <i class="ph-fill ph-x-circle text-3xl"></i>
+              </div>
+              <div>
+                <p
+                  class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1"
+                >
+                  Batal (Total)
+                </p>
+                <h2 class="text-3xl font-black text-slate-700" id="stat-batal">
+                  0
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
+          >
+            <div
+              class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50"
+            >
+              <h3 class="font-bold text-slate-800">
+                Aktivitas Pengujian Terakhir
+              </h3>
+              <button
+                onclick="window.switchTab('data')"
+                class="text-blue-600 text-sm font-bold active-scale hover:underline"
+              >
+                Lihat Semua Data
+              </button>
+            </div>
+            <div
+              class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4"
+              id="home-recent-list"
+            >
+              <div class="text-slate-400 text-sm py-4 col-span-full">
+                Memuat data...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= PAGE: DATA ================= -->
+        <div id="page-data" class="page max-w-6xl mx-auto">
+          <div
+            class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between"
+          >
+            <div class="relative w-full md:w-96">
+              <i
+                class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"
+              ></i>
+              <input
+                type="text"
+                id="search-input"
+                oninput="window.renderDataList()"
+                placeholder="Cari berdasarkan nama pemilik / usaha..."
+                class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl py-2.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+              />
+            </div>
+
+            <div
+              class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0"
+              id="filter-container"
+            >
+              <button
+                onclick="window.setFilter('Semua', this)"
+                class="filter-btn active whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-white transition-colors border border-transparent"
+              >
+                Semua
+              </button>
+              <button
+                onclick="window.setFilter('Sah', this)"
+                class="filter-btn whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors"
+              >
+                Hanya Sah
+              </button>
+              <button
+                onclick="window.setFilter('Batal', this)"
+                class="filter-btn whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors"
+              >
+                Hanya Batal
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            id="data-list-container"
+          >
+            <div class="text-slate-400 text-sm col-span-full py-10 text-center">
+              Memuat data...
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= PAGE: INPUT ================= -->
+        <div id="page-input" class="page">
+          <div
+            class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
+          >
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+              <h2 class="font-bold text-lg text-slate-800">
+                Formulir Pengujian UTTP
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Lengkapi data pemilik dan alat di bawah ini.
+              </p>
+            </div>
+
+            <div class="p-8 space-y-8">
+              <!-- Info Pemilik -->
+              <div>
+                <h3
+                  class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
+                >
+                  <i class="ph-fill ph-user-circle text-lg"></i> Informasi
+                  Pemilik / Usaha
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Nama Pemilik / Usaha
+                      <span class="text-red-500">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="input-nama"
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                      placeholder="Wajib diisi"
+                    />
+                  </div>
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Alamat Lokasi</label
+                    >
+                    <textarea
+                      id="input-alamat"
+                      rows="2"
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                      placeholder="Alamat lengkap..."
+                    ></textarea>
+                  </div>
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Titik Koordinat GPS</label
+                    >
+                    <div class="flex gap-2">
+                      <input
+                        type="text"
+                        id="input-gps"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-500"
+                        placeholder="Klik tombol lokasi di samping"
+                        readonly
+                      />
+                      <button
+                        type="button"
+                        onclick="window.getGPSLocation()"
+                        class="bg-blue-100 text-blue-600 px-5 rounded-xl font-bold active-scale flex items-center justify-center hover:bg-blue-200 transition-colors"
+                      >
+                        <i class="ph-bold ph-crosshair text-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Info Alat -->
+              <div>
+                <h3
+                  class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
+                >
+                  <i class="ph-fill ph-scales text-lg"></i> Data Alat (UTTP)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Jenis Alat <span class="text-red-500">*</span></label
+                    >
+                    <select
+                      id="input-jenis"
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                    >
+                      <option value="">-- Pilih jenis alat (Wajib) --</option>
+                      <optgroup label="Kelompok Timbangan">
+                        <option value="Timbangan Meja">Timbangan Meja</option>
+                        <option value="Timbangan Sentisimal">
+                          Timbangan Sentisimal
+                        </option>
+                        <option value="Timbangan Elektronik">
+                          Timbangan Elektronik
+                        </option>
+                        <option value="Timbangan Dacin">Timbangan Dacin</option>
+                        <option value="Timbangan Pegas">Timbangan Pegas</option>
+                        <option value="Timbangan Jembatan">
+                          Timbangan Jembatan
+                        </option>
+                        <option value="Timbangan Cepat">Timbangan Cepat</option>
+                        <option value="Anak Timbangan (AT)">
+                          Anak Timbangan (AT)
+                        </option>
+                      </optgroup>
+                      <optgroup label="Kelompok Meteran">
+                        <option value="Meter Air">Meter Air (PDAM)</option>
+                        <option value="Meter Listrik">
+                          Meter Listrik (kWh)
+                        </option>
+                        <option value="Meter Gas">Meter Gas</option>
+                        <option value="Meter Taksi">Meter Taksi</option>
+                        <option value="Meter Panjang">
+                          Meter Panjang (Kayu/Kain)
+                        </option>
+                      </optgroup>
+                      <optgroup label="Kelompok Volume">
+                        <option value="Pompa Ukur BBM">
+                          Pompa Ukur BBM (SPBU)
+                        </option>
+                        <option value="Tangki Ukur Mobil">
+                          Tangki Ukur Mobil (BBM)
+                        </option>
+                        <option value="Takaran Volume">
+                          Takaran Volume (Literan)
+                        </option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Merek</label
+                    >
+                    <input
+                      type="text"
+                      id="input-merek"
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Kapasitas</label
+                    >
+                    <input
+                      type="text"
+                      id="input-kapasitas"
+                      placeholder="Cth: 10 Kg"
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                    />
+                  </div>
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-xs font-semibold text-slate-500 mb-1.5"
+                      >Biaya Retribusi (Rp)</label
+                    >
+                    <div class="relative">
+                      <span
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold text-sm"
+                        >Rp</span
+                      >
+                      <input
+                        type="number"
+                        id="input-retribusi"
+                        value="0"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-11 pr-4 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hasil -->
+              <div>
+                <h3
+                  class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
+                >
+                  <i class="ph-fill ph-clipboard-text text-lg"></i> Keputusan
+                  Hasil Pengujian
+                </h3>
+                <div class="grid grid-cols-2 gap-5">
+                  <label class="relative cursor-pointer">
+                    <input
+                      type="radio"
+                      name="status-tera"
+                      value="Sah"
+                      class="peer sr-only"
+                      checked
+                    />
+                    <div
+                      class="p-5 rounded-xl border-2 border-slate-200 bg-white flex items-center justify-center gap-3 transition-all hover:bg-slate-50"
+                    >
+                      <i
+                        class="ph-fill ph-check-circle text-3xl text-slate-300 radio-icon"
+                      ></i>
+                      <span class="font-bold text-lg text-slate-700">SAH</span>
+                    </div>
+                  </label>
+                  <label class="relative cursor-pointer">
+                    <input
+                      type="radio"
+                      name="status-tera"
+                      value="Batal"
+                      class="peer sr-only"
+                    />
+                    <div
+                      class="p-5 rounded-xl border-2 border-slate-200 bg-white flex items-center justify-center gap-3 transition-all hover:bg-slate-50"
+                    >
+                      <i
+                        class="ph-fill ph-x-circle text-3xl text-slate-300 radio-icon"
+                      ></i>
+                      <span class="font-bold text-lg text-slate-700"
+                        >BATAL</span
+                      >
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="p-6 bg-slate-50 border-t border-slate-100 flex justify-end gap-3"
+            >
+              <button
+                type="button"
+                onclick="window.switchTab('home')"
+                class="px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                id="btn-simpan"
+                onclick="window.prosesSimpan()"
+                class="px-8 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30 active-scale transition-transform flex items-center justify-center gap-2"
+              >
+                <i class="ph-bold ph-floppy-disk text-lg"></i> Simpan Data Tera
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= PAGE: PROFIL ================= -->
+        <div id="page-profil" class="page max-w-4xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Profil Card -->
+            <div
+              class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 relative"
+            >
+              <h2
+                class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-3"
+              >
+                Profil Petugas
+              </h2>
+              <button
+                onclick="window.bukaEditProfil()"
+                class="absolute top-8 right-8 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                <i class="ph-bold ph-pencil-simple text-sm"></i>
+              </button>
+              <div class="flex items-center gap-5">
+                <div
+                  class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center border-4 border-white shadow-sm flex-shrink-0"
+                >
+                  <i class="ph-fill ph-user text-4xl text-blue-600"></i>
+                </div>
+                <div>
+                  <h2
+                    class="text-2xl font-bold text-slate-800"
+                    id="profil-nama"
+                  >
+                    Petugas Tera
+                  </h2>
+                  <p class="text-slate-500 mt-1" id="profil-jabatan">
+                    Penera Ahli Pertama
+                  </p>
+                  <p
+                    class="text-sm font-mono text-slate-400 mt-2 bg-slate-50 inline-block px-2 py-1 rounded border border-slate-100"
+                    id="profil-nip"
+                  >
+                    NIP. 19900101 202012 1 001
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sistem Card -->
+            <div
+              class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
+            >
+              <h2
+                class="text-lg font-bold text-slate-800 mb-2 border-b border-slate-100 p-6 bg-slate-50/50"
+              >
+                Pengaturan & Backup
+              </h2>
+              <div class="flex flex-col">
+                <button
+                  onclick="window.connectPrinter()"
+                  class="p-5 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors"
+                >
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600"
+                    >
+                      <i class="ph-fill ph-printer text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                      <p class="font-semibold text-slate-700">
+                        Printer Bluetooth
+                      </p>
+                      <p class="text-xs text-slate-500 mt-0.5">
+                        Hubungkan untuk cetak SKHP
+                      </p>
+                    </div>
+                  </div>
+                  <i class="ph-bold ph-caret-right text-slate-300"></i>
+                </button>
+
+                <button
+                  onclick="window.exportJSON()"
+                  class="p-5 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors"
+                >
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"
+                    >
+                      <i class="ph-fill ph-download-simple text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                      <p class="font-semibold text-slate-700">
+                        Backup Data (Export JSON)
+                      </p>
+                      <p class="text-xs text-slate-500 mt-0.5">
+                        Unduh data ke perangkat
+                      </p>
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onclick="document.getElementById('file-import').click()"
+                  class="p-5 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors"
+                >
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600"
+                    >
+                      <i class="ph-fill ph-upload-simple text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                      <p class="font-semibold text-slate-700">
+                        Restore Data (Import JSON)
+                      </p>
+                      <p class="text-xs text-slate-500 mt-0.5">
+                        Pulihkan dari file JSON
+                      </p>
+                    </div>
+                  </div>
+                </button>
+                <input
+                  type="file"
+                  id="file-import"
+                  accept=".json"
+                  class="hidden"
+                  onchange="window.importJSON(event)"
+                />
+
+                <div class="p-5 flex items-center gap-4 bg-slate-50 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600"
+                  >
+                    <i class="ph-fill ph-database text-xl"></i>
+                  </div>
+                  <div class="text-left">
+                    <p class="font-semibold text-slate-700">Penyimpanan</p>
+                    <p
+                      class="text-xs text-green-600 font-bold mt-0.5"
+                      id="status-db"
+                    >
+                      Lokal JSON (Aktif)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+    <!-- Modal Detail Data -->
+    <div
+      id="modal-detail"
+      class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
+    >
+      <div
+        class="bg-white w-full max-w-lg rounded-2xl p-6 modal-pop shadow-2xl flex flex-col max-h-[90vh]"
+      >
+        <div
+          class="flex justify-between items-start mb-6 flex-shrink-0 border-b border-slate-100 pb-4"
+        >
+          <div>
+            <h2 class="text-xl font-bold text-slate-800">Detail Pengujian</h2>
+            <p class="text-sm text-slate-500 mt-1" id="det-tanggal">-</p>
+          </div>
+          <div
+            id="det-badge"
+            class="px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 uppercase tracking-wide"
+          >
+            SAH
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto space-y-4 pb-4 pr-2">
+          <div
+            class="grid grid-cols-2 gap-4 bg-slate-50 rounded-xl p-5 border border-slate-100"
+          >
+            <div class="col-span-2">
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                ID Register
+              </p>
+              <p
+                class="text-sm font-semibold text-slate-800 mt-0.5 font-mono bg-white inline-block px-2 py-0.5 rounded border border-slate-200"
+                id="det-id"
+              >
+                -
+              </p>
+            </div>
+            <div class="col-span-2">
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Pemilik / Usaha
+              </p>
+              <p
+                class="text-base font-bold text-slate-800 mt-0.5"
+                id="det-nama"
+              >
+                -
+              </p>
+            </div>
+            <div class="col-span-2">
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Alamat Lengkap
+              </p>
+              <p
+                class="text-sm font-medium text-slate-700 mt-0.5"
+                id="det-alamat"
+              >
+                -
+              </p>
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-2 gap-4 bg-slate-50 rounded-xl p-5 border border-slate-100 border-l-4 border-l-blue-500"
+          >
+            <div class="col-span-2">
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Jenis Alat
+              </p>
+              <p
+                class="text-base font-bold text-slate-800 mt-0.5"
+                id="det-jenis"
+              >
+                -
+              </p>
+            </div>
+            <div>
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Merek
+              </p>
+              <p
+                class="text-sm font-medium text-slate-700 mt-0.5"
+                id="det-merek"
+              >
+                -
+              </p>
+            </div>
+            <div>
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Kapasitas
+              </p>
+              <p
+                class="text-sm font-medium text-slate-700 mt-0.5"
+                id="det-kapasitas"
+              >
+                -
+              </p>
+            </div>
+            <div class="col-span-2 pt-2 mt-2 border-t border-slate-200">
+              <p
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+              >
+                Retribusi
+              </p>
+              <p
+                class="text-base font-bold text-blue-600 mt-0.5"
+                id="det-retribusi"
+              >
+                Rp 0
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex gap-3 mt-4 pt-4 border-t border-slate-100 flex-shrink-0"
+        >
+          <button
+            onclick="window.tutupModal('modal-detail')"
+            class="flex-1 py-3 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-sm transition-colors"
+          >
+            Tutup
+          </button>
+          <button
+            onclick="window.printSKHP()"
+            class="flex-1 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2"
+          >
+            <i class="ph-bold ph-printer text-lg"></i> Cetak SKHP
+          </button>
+        </div>
+        <div class="text-center mt-4">
+          <button
+            onclick="window.bukaKonfirmasiHapus()"
+            class="text-red-500 hover:text-red-700 text-xs font-bold flex items-center justify-center gap-1 mx-auto transition-colors"
+          >
+            <i class="ph-bold ph-trash"></i> Hapus Data Permanen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Confirm Hapus -->
+    <div
+      id="modal-confirm"
+      class="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center px-4"
+    >
+      <div
+        class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl modal-pop flex flex-col text-center"
+      >
+        <div
+          class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500"
+        >
+          <i class="ph-fill ph-warning-circle text-4xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">Hapus Data?</h3>
+        <p class="text-sm text-slate-500 mt-2">
+          Data akan dihapus dari penyimpanan perangkat. Tindakan ini tidak dapat
+          dibatalkan.
+        </p>
+        <div class="flex gap-3 mt-6">
+          <button
+            onclick="window.tutupModal('modal-confirm')"
+            class="flex-1 py-3 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-sm transition-colors"
+          >
+            Batal
+          </button>
+          <button
+            onclick="window.hapusDataLokal()"
+            class="flex-1 py-3 bg-red-600 text-white hover:bg-red-700 rounded-xl font-bold text-sm shadow-md transition-colors"
+          >
+            Ya, Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Profil -->
+    <div
+      id="modal-edit-profil"
+      class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
+    >
+      <div
+        class="bg-white w-full max-w-md rounded-2xl p-6 modal-pop shadow-2xl"
+      >
+        <h2
+          class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-3"
+        >
+          Edit Profil
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5"
+              >Nama Lengkap</label
+            >
+            <input
+              type="text"
+              id="edit-nama"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5"
+              >Jabatan</label
+            >
+            <input
+              type="text"
+              id="edit-jabatan"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5"
+              >NIP</label
+            >
+            <input
+              type="text"
+              id="edit-nip"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+            />
+          </div>
+        </div>
+        <div class="flex gap-3 mt-8">
+          <button
+            onclick="window.tutupModal('modal-edit-profil')"
+            class="flex-1 py-3 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-sm transition-colors"
+          >
+            Batal
+          </button>
+          <button
+            onclick="window.simpanProfil()"
+            class="flex-1 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm shadow-md transition-colors"
+          >
+            Simpan Profil
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Alert -->
+    <div
+      id="toast"
+      class="fixed top-20 right-8 bg-slate-800 text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-xl z-[200] transition-all duration-300 opacity-0 pointer-events-none transform translate-x-4 flex items-center gap-3"
+    >
+      <i class="ph-fill ph-info text-blue-400 text-xl"></i>
+      <span id="toast-msg">Pesan</span>
+    </div>
+
+    <!-- ================= SCRIPT GLOBAL & LOKAL DATA JSON ================= -->
+    <script>
+      let globalTeraData = [];
+      let currentDetailId = null;
+      let currentFilter = "Semua";
+      const STORAGE_KEY = "tera_data_json";
+
+      // 0. Update Date on Header
+      const headerDate = document.getElementById("header-date");
+      if (headerDate) {
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        };
+        headerDate.innerText = new Date().toLocaleDateString("id-ID", options);
+      }
+
+      // 1. Fungsi Toast Dashboard Version
+      window.tampilkanPesan = function (msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-msg").innerText = msg;
+        toast.classList.remove("opacity-0", "translate-x-4");
+        toast.classList.add("opacity-100", "translate-x-0");
+        setTimeout(() => {
+          toast.classList.remove("opacity-100", "translate-x-0");
+          toast.classList.add("opacity-0", "translate-x-4");
+        }, 3000);
+      };
+
+      // 2. Fungsi Navigasi Tab
+      const pageTitles = {
+        home: "Overview Dashboard",
+        data: "Manajemen Data Tera",
+        input: "Input Data Pengujian",
+        profil: "Pengaturan Sistem",
+      };
+
+      window.switchTab = function (tabId) {
+        // Sembunyikan semua page
+        document.querySelectorAll(".page").forEach((page) => {
+          page.style.display = "none";
+          page.classList.remove("active");
+        });
+
+        // Tampilkan page target
+        const targetPage = document.getElementById(`page-${tabId}`);
+        if (targetPage) {
+          targetPage.style.display = "block";
+          targetPage.classList.add("active");
+        }
+
+        // Update title header
+        document.getElementById("header-title").innerText =
+          pageTitles[tabId] || "Dashboard";
+
+        // Reset semua tombol sidebar
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.remove("active-nav", "bg-blue-50");
+          const i = btn.querySelector("i");
+          if (i) {
+            i.classList.remove("ph-fill", "text-blue-600");
+            i.classList.add("ph");
+          }
+        });
+
+        // Set aktif tombol yang diklik
+        const activeBtn = document.getElementById(`nav-${tabId}`);
+        if (activeBtn) {
+          activeBtn.classList.add("active-nav");
+          const i = activeBtn.querySelector("i");
+          if (i) {
+            i.classList.remove("ph");
+            i.classList.add("ph-fill", "text-blue-600");
+          }
+        }
+      };
+
+      // 3. Fungsi Modal & Profil
+      window.tutupModal = function (id) {
+        const modal = document.getElementById(id);
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      };
+
+      window.bukaEditProfil = function () {
+        document.getElementById("edit-nama").value =
+          document.getElementById("profil-nama").innerText;
+        document.getElementById("edit-jabatan").value =
+          document.getElementById("profil-jabatan").innerText;
+        document.getElementById("edit-nip").value = document
+          .getElementById("profil-nip")
+          .innerText.replace("NIP. ", "");
+        const modal = document.getElementById("modal-edit-profil");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      };
+
+      window.simpanProfil = function () {
+        const data = {
+          nama: document.getElementById("edit-nama").value,
+          jabatan: document.getElementById("edit-jabatan").value,
+          nip: document.getElementById("edit-nip").value,
+        };
+        localStorage.setItem("teraProfile", JSON.stringify(data));
+        window.loadProfilUI();
+        window.tutupModal("modal-edit-profil");
+        window.tampilkanPesan("Profil berhasil diperbarui");
+      };
+
+      window.loadProfilUI = function () {
+        const data = JSON.parse(localStorage.getItem("teraProfile"));
+        if (data) {
+          document.getElementById("profil-nama").innerText = data.nama;
+          document.getElementById("sidebar-nama").innerText = data.nama;
+          document.getElementById("profil-jabatan").innerText = data.jabatan;
+          document.getElementById("profil-nip").innerText = "NIP. " + data.nip;
+        }
+      };
+      window.loadProfilUI();
+
+      // 4. GPS & Printer (Placeholder function)
+      window.getGPSLocation = function () {
+        const btn = document.getElementById("input-gps");
+        btn.value = "Mencari lokasi...";
+        setTimeout(() => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                btn.value = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+              },
+              (err) => {
+                btn.value = "-4.0034, 122.5076 (Default)";
+                window.tampilkanPesan("GPS Gagal, data default dipakai");
+              },
+            );
+          } else {
+            btn.value = "-4.0034, 122.5076 (Default)";
+          }
+        }, 1500);
+      };
+
+      window.connectPrinter = function () {
+        window.tampilkanPesan("Fitur khusus untuk build Android (Kodular)");
+      };
+
+      window.printSKHP = function () {
+        window.tampilkanPesan("Fitur cetak dikirim ke printer");
+      };
+
+      window.notifAlert = function () {
+        window.tampilkanPesan("Tidak ada pemberitahuan baru");
+      };
+
+      // 5. Fungsi Render UI List Data
+      window.formatRupiah = function (angka) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(angka);
+      };
+
+      window.bukaDetail = function (id) {
+        const item = globalTeraData.find((d) => d.id === id);
+        if (!item) return;
+        currentDetailId = id;
+        document.getElementById("det-tanggal").innerText = item.tanggal || "-";
+        document.getElementById("det-id").innerText = item.id
+          ? item.id.substring(0, 8).toUpperCase()
+          : "-";
+        document.getElementById("det-nama").innerText = item.nama || "-";
+        document.getElementById("det-alamat").innerText = item.alamat || "-";
+        document.getElementById("det-jenis").innerText = item.jenis || "-";
+        document.getElementById("det-merek").innerText = item.merek || "-";
+        document.getElementById("det-kapasitas").innerText =
+          item.kapasitas || "-";
+        document.getElementById("det-retribusi").innerText =
+          window.formatRupiah(item.retribusi || 0);
+
+        const badge = document.getElementById("det-badge");
+        badge.innerText = item.status || "Sah";
+        badge.className =
+          item.status === "Sah"
+            ? "px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 uppercase tracking-wide"
+            : "px-4 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700 uppercase tracking-wide";
+
+        const modal = document.getElementById("modal-detail");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      };
+
+      window.bukaKonfirmasiHapus = function () {
+        const modal = document.getElementById("modal-confirm");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      };
+
+      window.setFilter = function (filterName, element) {
+        document.querySelectorAll(".filter-btn").forEach((b) => {
+          b.classList.remove(
+            "bg-slate-800",
+            "text-white",
+            "active",
+            "border-transparent",
+          );
+          b.classList.add("bg-white", "text-slate-600", "border-slate-200");
+        });
+        element.classList.remove(
+          "bg-white",
+          "text-slate-600",
+          "border-slate-200",
+        );
+        element.classList.add(
+          "bg-slate-800",
+          "text-white",
+          "active",
+          "border-transparent",
+        );
+        currentFilter = filterName;
+        window.renderDataList();
+      };
+
+      window.renderDataList = function () {
+        const total = globalTeraData.length;
+        const totalSah = globalTeraData.filter(
+          (d) => d.status === "Sah",
+        ).length;
+        const totalBatal = total - totalSah;
+
+        document.getElementById("stat-total").innerText = total;
+        document.getElementById("stat-sah").innerText = totalSah;
+        document.getElementById("stat-batal").innerText = totalBatal;
+
+        // Render Home Recent
+        const recentContainer = document.getElementById("home-recent-list");
+        if (globalTeraData.length === 0) {
+          recentContainer.innerHTML =
+            '<div class="text-slate-400 text-sm py-4 col-span-full text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">Belum ada data pengujian terbaru.</div>';
+        } else {
+          recentContainer.innerHTML = "";
+          globalTeraData.slice(0, 4).forEach((item) => {
+            const icon =
+              item.status === "Sah"
+                ? "ph-check-circle text-green-500"
+                : "ph-x-circle text-red-500";
+            const bg = item.status === "Sah" ? "bg-green-50" : "bg-red-50";
+            recentContainer.innerHTML += `
+              <div onclick="window.bukaDetail('${item.id}')" class="bg-white border border-slate-100 p-4 rounded-xl flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                  <div class="w-12 h-12 ${bg} rounded-xl flex items-center justify-center flex-shrink-0"><i class="ph-fill ${icon} text-2xl"></i></div>
+                  <div class="flex-1 min-w-0">
+                      <h4 class="font-bold text-sm text-slate-800 truncate">${item.nama}</h4>
+                      <p class="text-[11px] font-medium text-slate-400 truncate mt-0.5">${item.jenis}</p>
+                  </div>
+                  <div class="text-right flex-shrink-0">
+                      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Tanggal</p>
+                      <p class="text-xs font-bold text-slate-700 mt-0.5">${item.tanggal}</p>
+                  </div>
+              </div>`;
+          });
+        }
+
+        // Render Data Tab Grid
+        const container = document.getElementById("data-list-container");
+        const searchQuery = (
+          document.getElementById("search-input").value || ""
+        ).toLowerCase();
+        let filteredData = globalTeraData;
+
+        if (currentFilter !== "Semua")
+          filteredData = filteredData.filter((i) => i.status === currentFilter);
+        if (searchQuery)
+          filteredData = filteredData.filter((i) =>
+            i.nama.toLowerCase().includes(searchQuery),
+          );
+
+        if (filteredData.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-16 col-span-full bg-white rounded-2xl border border-dashed border-slate-200">
+                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ph-fill ph-magnifying-glass text-2xl text-slate-400"></i>
+                </div>
+                <p class="text-slate-500 text-sm font-medium">Tidak ada data ditemukan</p>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = "";
+        filteredData.forEach((item) => {
+          const badge =
+            item.status === "Sah"
+              ? "bg-blue-50 text-blue-700 border-blue-200"
+              : "bg-red-50 text-red-700 border-red-200";
+          container.innerHTML += `
+            <div onclick="window.bukaDetail('${item.id}')" class="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full ${item.status === "Sah" ? "bg-blue-500" : "bg-red-500"}"></div>
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex-1 min-w-0 pr-3">
+                        <h4 class="font-bold text-base text-slate-800 truncate leading-tight">${item.nama}</h4>
+                        <p class="text-[11px] text-slate-400 mt-1 truncate flex items-center gap-1"><i class="ph-fill ph-map-pin"></i> ${item.alamat}</p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded border text-[10px] font-bold ${badge} flex-shrink-0">${item.status}</span>
+                </div>
+                <div class="mt-auto pt-4 border-t border-slate-50 flex justify-between items-end">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Alat</p>
+                        <p class="text-sm font-semibold text-slate-700 mt-0.5 truncate max-w-[150px]">${item.jenis}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Tgl Uji</p>
+                        <p class="text-xs font-semibold text-slate-700 mt-0.5">${item.tanggal}</p>
+                    </div>
+                </div>
+            </div>`;
+        });
+      };
+
+      // ================= MANAJEMEN DATA JSON (LOKAL) ================= //
+
+      window.loadLocalData = function () {
+        const storedData = localStorage.getItem(STORAGE_KEY);
+        if (storedData) {
+          try {
+            globalTeraData = JSON.parse(storedData);
+          } catch (e) {
+            globalTeraData = [];
+          }
+        } else {
+          globalTeraData = [];
+        }
+        window.renderDataList();
+      };
+
+      window.prosesSimpan = function () {
+        const nama = document.getElementById("input-nama").value.trim();
+        const jenis = document.getElementById("input-jenis").value;
+
+        if (!nama || !jenis) {
+          window.tampilkanPesan(
+            "Perhatian: Nama Pemilik dan Jenis Alat Wajib Diisi!",
+          );
+          return;
+        }
+
+        const radioStatus = document.querySelector(
+          'input[name="status-tera"]:checked',
+        );
+        const newData = {
+          id: "tera-" + Date.now(),
+          nama: nama,
+          alamat: document.getElementById("input-alamat").value || "-",
+          gps: document.getElementById("input-gps").value || "-",
+          jenis: jenis,
+          merek: document.getElementById("input-merek").value || "-",
+          kapasitas: document.getElementById("input-kapasitas").value || "-",
+          retribusi:
+            parseInt(document.getElementById("input-retribusi").value) || 0,
+          status: radioStatus ? radioStatus.value : "Sah",
+          tanggal: new Date().toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
+          timestamp: Date.now(),
+        };
+
+        globalTeraData.unshift(newData);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
+
+        window.tampilkanPesan("Data berhasil disimpan secara lokal!");
+
+        document.getElementById("input-nama").value = "";
+        document.getElementById("input-alamat").value = "";
+        document.getElementById("input-gps").value = "";
+        document.getElementById("input-jenis").value = "";
+        document.getElementById("input-merek").value = "";
+        document.getElementById("input-kapasitas").value = "";
+        document.getElementById("input-retribusi").value = "0";
+
+        window.switchTab("data");
+      };
+
+      window.hapusDataLokal = function () {
+        if (!currentDetailId) return;
+        globalTeraData = globalTeraData.filter((d) => d.id !== currentDetailId);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
+        window.renderDataList();
+
+        window.tutupModal("modal-confirm");
+        window.tutupModal("modal-detail");
+        window.tampilkanPesan("Data sukses dihapus dari penyimpanan");
+      };
+
+      window.exportJSON = function () {
+        if (globalTeraData.length === 0) {
+          window.tampilkanPesan("Tidak ada data untuk diexport!");
+          return;
+        }
+        const dataStr = JSON.stringify(globalTeraData, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `backup_tera_dashboard_${new Date().getTime()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        window.tampilkanPesan("File JSON berhasil diunduh");
+      };
+
+      window.importJSON = function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+              globalTeraData = importedData;
+              globalTeraData.sort(
+                (a, b) => (b.timestamp || 0) - (a.timestamp || 0),
+              );
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
+              window.renderDataList();
+              window.tampilkanPesan("Data JSON berhasil dimuat!");
+            } else {
+              window.tampilkanPesan("Format JSON tidak valid!");
+            }
+          } catch (err) {
+            window.tampilkanPesan("Gagal membaca file JSON!");
+          }
+          event.target.value = "";
+        };
+        reader.readAsText(file);
+      };
+
+      // Inisialisasi awal
+      window.onload = function () {
+        window.loadLocalData();
+      };
+    </script>
+  </body>
+</html>
