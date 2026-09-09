@@ -11,6 +11,10 @@
       rel="stylesheet"
     />
 
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -77,7 +81,6 @@
         color: #2563eb;
       }
 
-      /* Sidebar Active State */
       .nav-btn.active-nav {
         background-color: #eff6ff;
         color: #2563eb;
@@ -179,7 +182,6 @@
 
     <!-- ================= MAIN CONTENT AREA ================= -->
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
-      <!-- Top Header -->
       <header
         class="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0"
       >
@@ -204,12 +206,10 @@
         </div>
       </header>
 
-      <!-- Main Scrollable Area -->
       <main class="flex-1 overflow-y-auto p-8">
-        <!-- ================= PAGE: BERANDA ================= -->
+        <!-- PAGE: BERANDA -->
         <div id="page-home" class="page active max-w-6xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Stat 1 -->
             <div
               class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
             >
@@ -229,7 +229,6 @@
                 </h2>
               </div>
             </div>
-            <!-- Stat 2 -->
             <div
               class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
             >
@@ -249,7 +248,6 @@
                 </h2>
               </div>
             </div>
-            <!-- Stat 3 -->
             <div
               class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-5"
             >
@@ -292,13 +290,13 @@
               id="home-recent-list"
             >
               <div class="text-slate-400 text-sm py-4 col-span-full">
-                Memuat data...
+                Memuat data dari Firebase...
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ================= PAGE: DATA ================= -->
+        <!-- PAGE: DATA -->
         <div id="page-data" class="page max-w-6xl mx-auto">
           <div
             class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between"
@@ -346,12 +344,12 @@
             id="data-list-container"
           >
             <div class="text-slate-400 text-sm col-span-full py-10 text-center">
-              Memuat data...
+              Memuat data dari Firebase...
             </div>
           </div>
         </div>
 
-        <!-- ================= PAGE: INPUT ================= -->
+        <!-- PAGE: INPUT -->
         <div id="page-input" class="page">
           <div
             class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
@@ -366,7 +364,6 @@
             </div>
 
             <div class="p-8 space-y-8">
-              <!-- Info Pemilik -->
               <div>
                 <h3
                   class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
@@ -425,7 +422,6 @@
                 </div>
               </div>
 
-              <!-- Info Alat -->
               <div>
                 <h3
                   class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
@@ -529,7 +525,6 @@
                 </div>
               </div>
 
-              <!-- Hasil -->
               <div>
                 <h3
                   class="text-sm font-bold text-blue-600 flex items-center gap-2 border-b border-slate-100 pb-3 mb-5"
@@ -599,10 +594,9 @@
           </div>
         </div>
 
-        <!-- ================= PAGE: PROFIL ================= -->
+        <!-- PAGE: PROFIL -->
         <div id="page-profil" class="page max-w-4xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Profil Card -->
             <div
               class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 relative"
             >
@@ -643,7 +637,6 @@
               </div>
             </div>
 
-            <!-- Sistem Card -->
             <div
               class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden"
             >
@@ -696,39 +689,11 @@
                   </div>
                 </button>
 
-                <button
-                  onclick="document.getElementById('file-import').click()"
-                  class="p-5 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors"
-                >
-                  <div class="flex items-center gap-4">
-                    <div
-                      class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600"
-                    >
-                      <i class="ph-fill ph-upload-simple text-xl"></i>
-                    </div>
-                    <div class="text-left">
-                      <p class="font-semibold text-slate-700">
-                        Restore Data (Import JSON)
-                      </p>
-                      <p class="text-xs text-slate-500 mt-0.5">
-                        Pulihkan dari file JSON
-                      </p>
-                    </div>
-                  </div>
-                </button>
-                <input
-                  type="file"
-                  id="file-import"
-                  accept=".json"
-                  class="hidden"
-                  onchange="window.importJSON(event)"
-                />
-
                 <div class="p-5 flex items-center gap-4 bg-slate-50 mt-auto">
                   <div
                     class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600"
                   >
-                    <i class="ph-fill ph-database text-xl"></i>
+                    <i class="ph-fill ph-cloud-check text-xl"></i>
                   </div>
                   <div class="text-left">
                     <p class="font-semibold text-slate-700">Penyimpanan</p>
@@ -736,7 +701,7 @@
                       class="text-xs text-green-600 font-bold mt-0.5"
                       id="status-db"
                     >
-                      Lokal JSON (Aktif)
+                      Firebase Firestore (Online)
                     </p>
                   </div>
                 </div>
@@ -747,8 +712,7 @@
       </main>
     </div>
 
-    <!-- ================= MODALS ================= -->
-    <!-- Modal Detail Data -->
+    <!-- MODAL DETAIL -->
     <div
       id="modal-detail"
       class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
@@ -900,7 +864,7 @@
       </div>
     </div>
 
-    <!-- Modal Confirm Hapus -->
+    <!-- MODAL CONFIRM HAPUS -->
     <div
       id="modal-confirm"
       class="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center px-4"
@@ -915,7 +879,7 @@
         </div>
         <h3 class="text-xl font-bold text-slate-800">Hapus Data?</h3>
         <p class="text-sm text-slate-500 mt-2">
-          Data akan dihapus dari penyimpanan perangkat. Tindakan ini tidak dapat
+          Data akan dihapus permanen dari Firebase. Tindakan ini tidak dapat
           dibatalkan.
         </p>
         <div class="flex gap-3 mt-6">
@@ -926,7 +890,7 @@
             Batal
           </button>
           <button
-            onclick="window.hapusDataLokal()"
+            onclick="window.hapusDataFirebase()"
             class="flex-1 py-3 bg-red-600 text-white hover:bg-red-700 rounded-xl font-bold text-sm shadow-md transition-colors"
           >
             Ya, Hapus
@@ -935,7 +899,7 @@
       </div>
     </div>
 
-    <!-- Modal Edit Profil -->
+    <!-- MODAL EDIT PROFIL -->
     <div
       id="modal-edit-profil"
       class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4"
@@ -997,7 +961,7 @@
       </div>
     </div>
 
-    <!-- Toast Alert -->
+    <!-- TOAST ALERT -->
     <div
       id="toast"
       class="fixed top-20 right-8 bg-slate-800 text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-xl z-[200] transition-all duration-300 opacity-0 pointer-events-none transform translate-x-4 flex items-center gap-3"
@@ -1006,26 +970,40 @@
       <span id="toast-msg">Pesan</span>
     </div>
 
-    <!-- ================= SCRIPT GLOBAL & LOKAL DATA JSON ================= -->
+    <!-- ================= JAVASCRIPT & FIREBASE LOGIC ================= -->
     <script>
+      // 1. Inisialisasi Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyAKK39_7koshPP6uL011kiqymWZosOs1ho",
+        authDomain: "tera-perindag.firebaseapp.com",
+        projectId: "tera-perindag",
+        storageBucket: "tera-perindag.firebasestorage.app",
+        messagingSenderId: "47931126015",
+        appId: "1:47931126015:web:97048445d11c56f6c51cca",
+        measurementId: "G-TB9LQ5M843"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      
+      // Mengarah ke koleksi database
+      const dataRef = db.collection("data_tera");
+
+      // 2. State & Helper
       let globalTeraData = [];
       let currentDetailId = null;
       let currentFilter = "Semua";
-      const STORAGE_KEY = "tera_data_json";
 
-      // 0. Update Date on Header
       const headerDate = document.getElementById("header-date");
       if (headerDate) {
-        const options = {
+        headerDate.innerText = new Date().toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",
           month: "short",
           day: "numeric",
-        };
-        headerDate.innerText = new Date().toLocaleDateString("id-ID", options);
+        });
       }
 
-      // 1. Fungsi Toast Dashboard Version
       window.tampilkanPesan = function (msg) {
         const toast = document.getElementById("toast");
         document.getElementById("toast-msg").innerText = msg;
@@ -1037,7 +1015,6 @@
         }, 3000);
       };
 
-      // 2. Fungsi Navigasi Tab
       const pageTitles = {
         home: "Overview Dashboard",
         data: "Manajemen Data Tera",
@@ -1046,24 +1023,20 @@
       };
 
       window.switchTab = function (tabId) {
-        // Sembunyikan semua page
         document.querySelectorAll(".page").forEach((page) => {
           page.style.display = "none";
           page.classList.remove("active");
         });
 
-        // Tampilkan page target
         const targetPage = document.getElementById(`page-${tabId}`);
         if (targetPage) {
           targetPage.style.display = "block";
           targetPage.classList.add("active");
         }
 
-        // Update title header
         document.getElementById("header-title").innerText =
           pageTitles[tabId] || "Dashboard";
 
-        // Reset semua tombol sidebar
         document.querySelectorAll(".nav-btn").forEach((btn) => {
           btn.classList.remove("active-nav", "bg-blue-50");
           const i = btn.querySelector("i");
@@ -1073,7 +1046,6 @@
           }
         });
 
-        // Set aktif tombol yang diklik
         const activeBtn = document.getElementById(`nav-${tabId}`);
         if (activeBtn) {
           activeBtn.classList.add("active-nav");
@@ -1085,83 +1057,98 @@
         }
       };
 
-      // 3. Fungsi Modal & Profil
-      window.tutupModal = function (id) {
-        const modal = document.getElementById(id);
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-      };
-
-      window.bukaEditProfil = function () {
-        document.getElementById("edit-nama").value =
-          document.getElementById("profil-nama").innerText;
-        document.getElementById("edit-jabatan").value =
-          document.getElementById("profil-jabatan").innerText;
-        document.getElementById("edit-nip").value = document
-          .getElementById("profil-nip")
-          .innerText.replace("NIP. ", "");
-        const modal = document.getElementById("modal-edit-profil");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      };
-
-      window.simpanProfil = function () {
-        const data = {
-          nama: document.getElementById("edit-nama").value,
-          jabatan: document.getElementById("edit-jabatan").value,
-          nip: document.getElementById("edit-nip").value,
-        };
-        localStorage.setItem("teraProfile", JSON.stringify(data));
-        window.loadProfilUI();
-        window.tutupModal("modal-edit-profil");
-        window.tampilkanPesan("Profil berhasil diperbarui");
-      };
-
-      window.loadProfilUI = function () {
-        const data = JSON.parse(localStorage.getItem("teraProfile"));
-        if (data) {
-          document.getElementById("profil-nama").innerText = data.nama;
-          document.getElementById("sidebar-nama").innerText = data.nama;
-          document.getElementById("profil-jabatan").innerText = data.jabatan;
-          document.getElementById("profil-nip").innerText = "NIP. " + data.nip;
-        }
-      };
-      window.loadProfilUI();
-
-      // 4. GPS & Printer (Placeholder function)
-      window.getGPSLocation = function () {
-        const btn = document.getElementById("input-gps");
-        btn.value = "Mencari lokasi...";
-        setTimeout(() => {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                btn.value = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
-              },
-              (err) => {
-                btn.value = "-4.0034, 122.5076 (Default)";
-                window.tampilkanPesan("GPS Gagal, data default dipakai");
-              },
-            );
-          } else {
-            btn.value = "-4.0034, 122.5076 (Default)";
+      // 3. Sinkronisasi Realtime Firebase Firestore
+      window.loadFirebaseData = function () {
+        dataRef.orderBy("timestamp", "desc").onSnapshot(
+          (snapshot) => {
+            globalTeraData = [];
+            snapshot.forEach((doc) => {
+              globalTeraData.push({ id: doc.id, ...doc.data() });
+            });
+            window.renderDataList();
+          },
+          (err) => {
+            console.error("Firestore error: ", err);
+            window.tampilkanPesan("Gagal memuat Firestore: " + err.message);
           }
-        }, 1500);
+        );
       };
 
-      window.connectPrinter = function () {
-        window.tampilkanPesan("Fitur khusus untuk build Android (Kodular)");
+      window.prosesSimpan = function () {
+        const nama = document.getElementById("input-nama").value.trim();
+        const jenis = document.getElementById("input-jenis").value;
+
+        if (!nama || !jenis) {
+          window.tampilkanPesan(
+            "Perhatian: Nama Pemilik dan Jenis Alat Wajib Diisi!",
+          );
+          return;
+        }
+
+        const btnSimpan = document.getElementById("btn-simpan");
+        btnSimpan.disabled = true;
+        btnSimpan.innerText = "Menyimpan...";
+
+        const radioStatus = document.querySelector(
+          'input[name="status-tera"]:checked',
+        );
+        const newData = {
+          nama: nama,
+          alamat: document.getElementById("input-alamat").value || "-",
+          gps: document.getElementById("input-gps").value || "-",
+          jenis: jenis,
+          merek: document.getElementById("input-merek").value || "-",
+          kapasitas: document.getElementById("input-kapasitas").value || "-",
+          retribusi:
+            parseInt(document.getElementById("input-retribusi").value) || 0,
+          status: radioStatus ? radioStatus.value : "Sah",
+          tanggal: new Date().toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
+          timestamp: Date.now(),
+        };
+
+        dataRef
+          .add(newData)
+          .then(() => {
+            window.tampilkanPesan("Data tersimpan ke Cloud Firestore!");
+            document.getElementById("input-nama").value = "";
+            document.getElementById("input-alamat").value = "";
+            document.getElementById("input-gps").value = "";
+            document.getElementById("input-jenis").value = "";
+            document.getElementById("input-merek").value = "";
+            document.getElementById("input-kapasitas").value = "";
+            document.getElementById("input-retribusi").value = "0";
+            window.switchTab("data");
+          })
+          .catch((err) => {
+            window.tampilkanPesan("Gagal menyimpan: " + err.message);
+          })
+          .finally(() => {
+            btnSimpan.disabled = false;
+            btnSimpan.innerHTML =
+              '<i class="ph-bold ph-floppy-disk text-lg"></i> Simpan Data Tera';
+          });
       };
 
-      window.printSKHP = function () {
-        window.tampilkanPesan("Fitur cetak dikirim ke printer");
+      window.hapusDataFirebase = function () {
+        if (!currentDetailId) return;
+        dataRef
+          .doc(currentDetailId)
+          .delete()
+          .then(() => {
+            window.tutupModal("modal-confirm");
+            window.tutupModal("modal-detail");
+            window.tampilkanPesan("Data terhapus dari Cloud");
+          })
+          .catch((err) => {
+            window.tampilkanPesan("Gagal menghapus: " + err.message);
+          });
       };
 
-      window.notifAlert = function () {
-        window.tampilkanPesan("Tidak ada pemberitahuan baru");
-      };
-
-      // 5. Fungsi Render UI List Data
+      // 4. Tampilan Data
       window.formatRupiah = function (angka) {
         return new Intl.NumberFormat("id-ID", {
           style: "currency",
@@ -1205,6 +1192,12 @@
         modal.classList.add("flex");
       };
 
+      window.tutupModal = function (id) {
+        const modal = document.getElementById(id);
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      };
+
       window.setFilter = function (filterName, element) {
         document.querySelectorAll(".filter-btn").forEach((b) => {
           b.classList.remove(
@@ -1232,20 +1225,17 @@
 
       window.renderDataList = function () {
         const total = globalTeraData.length;
-        const totalSah = globalTeraData.filter(
-          (d) => d.status === "Sah",
-        ).length;
+        const totalSah = globalTeraData.filter((d) => d.status === "Sah").length;
         const totalBatal = total - totalSah;
 
         document.getElementById("stat-total").innerText = total;
         document.getElementById("stat-sah").innerText = totalSah;
         document.getElementById("stat-batal").innerText = totalBatal;
 
-        // Render Home Recent
         const recentContainer = document.getElementById("home-recent-list");
         if (globalTeraData.length === 0) {
           recentContainer.innerHTML =
-            '<div class="text-slate-400 text-sm py-4 col-span-full text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">Belum ada data pengujian terbaru.</div>';
+            '<div class="text-slate-400 text-sm py-4 col-span-full text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">Belum ada data pengujian terbaru di Cloud.</div>';
         } else {
           recentContainer.innerHTML = "";
           globalTeraData.slice(0, 4).forEach((item) => {
@@ -1269,7 +1259,6 @@
           });
         }
 
-        // Render Data Tab Grid
         const container = document.getElementById("data-list-container");
         const searchQuery = (
           document.getElementById("search-input").value || ""
@@ -1324,80 +1313,71 @@
         });
       };
 
-      // ================= MANAJEMEN DATA JSON (LOKAL) ================= //
-
-      window.loadLocalData = function () {
-        const storedData = localStorage.getItem(STORAGE_KEY);
-        if (storedData) {
-          try {
-            globalTeraData = JSON.parse(storedData);
-          } catch (e) {
-            globalTeraData = [];
-          }
-        } else {
-          globalTeraData = [];
-        }
-        window.renderDataList();
+      // 5. Fitur Profil & Cadangan
+      window.bukaEditProfil = function () {
+        document.getElementById("edit-nama").value =
+          document.getElementById("profil-nama").innerText;
+        document.getElementById("edit-jabatan").value =
+          document.getElementById("profil-jabatan").innerText;
+        document.getElementById("edit-nip").value = document
+          .getElementById("profil-nip")
+          .innerText.replace("NIP. ", "");
+        const modal = document.getElementById("modal-edit-profil");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
       };
 
-      window.prosesSimpan = function () {
-        const nama = document.getElementById("input-nama").value.trim();
-        const jenis = document.getElementById("input-jenis").value;
-
-        if (!nama || !jenis) {
-          window.tampilkanPesan(
-            "Perhatian: Nama Pemilik dan Jenis Alat Wajib Diisi!",
-          );
-          return;
-        }
-
-        const radioStatus = document.querySelector(
-          'input[name="status-tera"]:checked',
-        );
-        const newData = {
-          id: "tera-" + Date.now(),
-          nama: nama,
-          alamat: document.getElementById("input-alamat").value || "-",
-          gps: document.getElementById("input-gps").value || "-",
-          jenis: jenis,
-          merek: document.getElementById("input-merek").value || "-",
-          kapasitas: document.getElementById("input-kapasitas").value || "-",
-          retribusi:
-            parseInt(document.getElementById("input-retribusi").value) || 0,
-          status: radioStatus ? radioStatus.value : "Sah",
-          tanggal: new Date().toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
-          timestamp: Date.now(),
+      window.simpanProfil = function () {
+        const data = {
+          nama: document.getElementById("edit-nama").value,
+          jabatan: document.getElementById("edit-jabatan").value,
+          nip: document.getElementById("edit-nip").value,
         };
-
-        globalTeraData.unshift(newData);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
-
-        window.tampilkanPesan("Data berhasil disimpan secara lokal!");
-
-        document.getElementById("input-nama").value = "";
-        document.getElementById("input-alamat").value = "";
-        document.getElementById("input-gps").value = "";
-        document.getElementById("input-jenis").value = "";
-        document.getElementById("input-merek").value = "";
-        document.getElementById("input-kapasitas").value = "";
-        document.getElementById("input-retribusi").value = "0";
-
-        window.switchTab("data");
+        localStorage.setItem("teraProfile", JSON.stringify(data));
+        window.loadProfilUI();
+        window.tutupModal("modal-edit-profil");
+        window.tampilkanPesan("Profil berhasil diperbarui");
       };
 
-      window.hapusDataLokal = function () {
-        if (!currentDetailId) return;
-        globalTeraData = globalTeraData.filter((d) => d.id !== currentDetailId);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
-        window.renderDataList();
+      window.loadProfilUI = function () {
+        const data = JSON.parse(localStorage.getItem("teraProfile"));
+        if (data) {
+          document.getElementById("profil-nama").innerText = data.nama;
+          document.getElementById("sidebar-nama").innerText = data.nama;
+          document.getElementById("profil-jabatan").innerText = data.jabatan;
+          document.getElementById("profil-nip").innerText = "NIP. " + data.nip;
+        }
+      };
+      window.loadProfilUI();
 
-        window.tutupModal("modal-confirm");
-        window.tutupModal("modal-detail");
-        window.tampilkanPesan("Data sukses dihapus dari penyimpanan");
+      window.getGPSLocation = function () {
+        const btn = document.getElementById("input-gps");
+        btn.value = "Mencari lokasi...";
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              btn.value = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+            },
+            (err) => {
+              btn.value = "-0.8917, 119.8707";
+              window.tampilkanPesan("GPS gagal, koordinat default digunakan");
+            },
+          );
+        } else {
+          btn.value = "-0.8917, 119.8707";
+        }
+      };
+
+      window.connectPrinter = function () {
+        window.tampilkanPesan("Fitur khusus untuk build Android (Kodular)");
+      };
+
+      window.printSKHP = function () {
+        window.tampilkanPesan("Fitur cetak dikirim ke printer");
+      };
+
+      window.notifAlert = function () {
+        window.tampilkanPesan("Tidak ada pemberitahuan baru");
       };
 
       window.exportJSON = function () {
@@ -1410,42 +1390,15 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `backup_tera_dashboard_${new Date().getTime()}.json`;
+        a.download = `backup_tera_cloud_${Date.now()}.json`;
         a.click();
         URL.revokeObjectURL(url);
         window.tampilkanPesan("File JSON berhasil diunduh");
       };
 
-      window.importJSON = function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          try {
-            const importedData = JSON.parse(e.target.result);
-            if (Array.isArray(importedData)) {
-              globalTeraData = importedData;
-              globalTeraData.sort(
-                (a, b) => (b.timestamp || 0) - (a.timestamp || 0),
-              );
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTeraData));
-              window.renderDataList();
-              window.tampilkanPesan("Data JSON berhasil dimuat!");
-            } else {
-              window.tampilkanPesan("Format JSON tidak valid!");
-            }
-          } catch (err) {
-            window.tampilkanPesan("Gagal membaca file JSON!");
-          }
-          event.target.value = "";
-        };
-        reader.readAsText(file);
-      };
-
-      // Inisialisasi awal
+      // Mulai listener realtime
       window.onload = function () {
-        window.loadLocalData();
+        window.loadFirebaseData();
       };
     </script>
   </body>
